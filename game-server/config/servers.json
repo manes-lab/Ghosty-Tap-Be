@@ -1,0 +1,30 @@
+{
+    "development":{
+        "connector":[
+             {"id":"connector-server-1", "host":"127.0.0.1", "port":4050, "clientPort": 3050, "frontend": true}
+         ],
+        "space":[
+             {"id":"space-server-1", "host":"127.0.0.1", "port":6050}
+        ],
+        "battle":[
+            {"id":"battle-server-1", "host":"127.0.0.1", "port":7050}
+        ],
+        "singleton":[
+            {"id":"singleton-server-1", "host":"127.0.0.1", "port":8050}
+        ]
+    },
+    "production":{
+        "connector":[
+            {"id":"connector-server-1", "host":"127.0.0.1", "port":4050, "clientPort": 3050, "frontend": true}
+        ],
+        "space":[
+            {"id":"space-server-1", "host":"127.0.0.1", "port":6050}
+        ],
+        "battle":[
+            {"id":"battle-server-1", "host":"127.0.0.1", "port":7050}
+        ],
+        "singleton":[
+            {"id":"singleton-server-1", "host":"127.0.0.1", "port":8050}
+        ]
+    }
+}

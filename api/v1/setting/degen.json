@@ -1,0 +1,22 @@
+{
+  "adventure": {
+    "coin": 100,
+    "consecutive_wins_count_2": 2,
+    "consecutive_wins_point_2": 150,
+    "consecutive_wins_count_3": 3,
+    "consecutive_wins_point_3": 200,
+    "consecutive_wins_count_4": 4,
+    "consecutive_wins_point_4": 300,
+    "consecutive_wins_count_5": 5,
+    "consecutive_wins_point_5": 400,
+    "consecutive_wins_count_6": 6,
+    "consecutive_wins_point_6": 500
+  },
+  "zen": {
+    "coin": 50,
+    "cd": 600000,
+    "max_coin": 3000
+
+  }
+
+}
