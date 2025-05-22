@@ -6,7 +6,7 @@
   },
   "host":"http://127.0.0.1",
   "mongodb":{
-    "host":"mongodb://admin:admin@13.214.203.20:27017/27s?authSource=admin",
+    "host":"mongodb://admin:admin@127.0.0.1:27017/27s?retryWrites=true&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1",
     "user":"admin",
     "password":"admin",
     "extra":{
