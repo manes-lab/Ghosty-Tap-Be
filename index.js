@@ -2,7 +2,6 @@ const Koa = require('koa');
 const app = new Koa();
 const config = require('config');
 const { initServer, initClient } = require('./plugins/websocket');
-config.Utils.isRegExp = obj => obj instanceof RegExp;
 const verify = require('./plugins/verify.js')
 const timer =require('./libraries/schedule/timer')
 global.config = config;
