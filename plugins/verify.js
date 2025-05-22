@@ -93,7 +93,7 @@ const verify = async (ctx, next) => {
   try {
     if (method == "POST" && allow.indexOf(url) != -1) {
 
-      const dataCheckString = params.data_check_string
+  /*    const dataCheckString = params.data_check_string
       const appId = params.app_id
       let token = config.telegram.OTHER_TOKEN[appId]
       if (!token) {
@@ -108,7 +108,7 @@ const verify = async (ctx, next) => {
         }
       }
 
-      const timestamp = initData.get('auth_date')
+      const timestamp = initData.get('auth_date')*/
       user=JSON.parse(user)
       console.log(user);
       ctx.params = {
