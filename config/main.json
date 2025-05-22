@@ -1,13 +1,12 @@
 {
-  "port":9000,
-  "host":"http://127.0.0.1",
-  "redis":{
-    "host":"127.0.0.1",
-    "port":6379,
-    "connectTimeout": 3000
+  "port":8102,
+  "websocket": {
+    "port": 30020,
+    "host": "ws://127.0.0.1:30010"
   },
+  "host":"http://127.0.0.1",
   "mongodb":{
-    "host":"mongodb://admin:admin@127.0.0.1:27017/27s?authSource=admin",
+    "host":"mongodb://admin:admin@13.214.203.20:27017/27s?authSource=admin",
     "user":"admin",
     "password":"admin",
     "extra":{
@@ -16,21 +15,21 @@
         "poolSize":10
       }
     }
+
   },
-  "limit":10,
-  "nearWallet": {
-    "networkId": "testnet",
-    "nodeUrl": "https://rpc.testnet.near.org",
-    "walletUrl": "https://wallet.testnet.near.org",
-    "helperUrl": "https://helper.testnet.near.org"
+  "telegram": {
+    "TOKEN":"7330743001:AAG5ndmLWDvO6sgKfTBRIgsdeNvDJWxkdSY",
+    "OTHER_TOKEN": {
+      "TEGEN_TAP": "7330743001:AAG5ndmLWDvO6sgKfTBRIgsdeNvDJWxkdSY"
+    },
+    "CHANNEL_ID": "-1002124957283",
+    "community":"-1002121329544"
   },
-  "constants": {
-    "MAIN_CONTRACT": "v5-app.bhc8521.testnet",
-    "ACCOUNT_ID": "bhc3.testnet",
-    "INDEXER": "postgres://public_readonly:nearprotocol@testnet.db.explorer.indexer.near.dev/testnet_explorer"
-  },
-  "aes": {
-    "key": "testnet1",
-    "iv": "3.1415926"
+  "ton": {
+    "ADDRESS": "EQDtNjxdzbG080OrsTJnh9nIsr6py0DlY4u3aH8qKxBZO6B9",
+    "RPC": "https://toncenter.com/api/v2/jsonRPC",
+    "API_KEY": "07a46b640eb2628e60ac3b05071a9866102257aff9b2a2e7c8a1887b168a4a36",
+    "MNEMONICS": ["extend", "estate", "run", "cart", "host", "mango","decorate", "audit", "result","duty", "tell", "curtain","inhale", "wide", "spoon","image", "future", "horse","lemon", "record", "antique","gadget", "worth",  "cruise"]
   }
+
 }
