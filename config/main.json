@@ -1,0 +1,36 @@
+{
+  "port":9000,
+  "host":"http://127.0.0.1",
+  "redis":{
+    "host":"127.0.0.1",
+    "port":6379,
+    "connectTimeout": 3000
+  },
+  "mongodb":{
+    "host":"mongodb://admin:admin@127.0.0.1:27017/27s?authSource=admin",
+    "user":"admin",
+    "password":"admin",
+    "extra":{
+      "server":{
+        "autoReconnect":true,
+        "poolSize":10
+      }
+    }
+  },
+  "limit":10,
+  "nearWallet": {
+    "networkId": "testnet",
+    "nodeUrl": "https://rpc.testnet.near.org",
+    "walletUrl": "https://wallet.testnet.near.org",
+    "helperUrl": "https://helper.testnet.near.org"
+  },
+  "constants": {
+    "MAIN_CONTRACT": "v5-app.bhc8521.testnet",
+    "ACCOUNT_ID": "bhc3.testnet",
+    "INDEXER": "postgres://public_readonly:nearprotocol@testnet.db.explorer.indexer.near.dev/testnet_explorer"
+  },
+  "aes": {
+    "key": "testnet1",
+    "iv": "3.1415926"
+  }
+}
