@@ -93,22 +93,22 @@ const verify = async (ctx, next) => {
   try {
     if (method == "POST" && allow.indexOf(url) != -1) {
 
-  /*    const dataCheckString = params.data_check_string
+   const dataCheckString = params.data_check_string
       const appId = params.app_id
       let token = config.telegram.OTHER_TOKEN[appId]
-      if (!token) {
+  /*    if (!token) {
         token = config.telegram.TOKEN
-      }
+      }*/
 
       const initData = new URLSearchParams( dataCheckString );
       let user = initData.get( "user" )
-      if (!auth(token, new URLSearchParams( dataCheckString ))) {
-        if (!auth(config.telegram.TOKEN, new URLSearchParams( dataCheckString ))) {
-          ctx.throw(401, 'now allowed');
-        }
-      }
+      /*      if (!auth(token, new URLSearchParams( dataCheckString ))) {
+           if (!auth(config.telegram.TOKEN, new URLSearchParams( dataCheckString ))) {
+             ctx.throw(401, 'now allowed');
+           }
+         }*/
 
-      const timestamp = initData.get('auth_date')*/
+         const timestamp = initData.get('auth_date')
       user=JSON.parse(user)
       console.log(user);
       ctx.params = {
