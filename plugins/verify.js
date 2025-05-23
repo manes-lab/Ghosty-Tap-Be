@@ -115,9 +115,10 @@ const verify = async (ctx, next) => {
       // user=JSON.parse(user)
       // console.log(user);
       ctx.params = {
-         appId: params.app_id,
-        ...params.args,
-        user_id:user_id
+
+        ...params,
+        user_id:user_id,
+        token:token
       }
       console.log(fgGreen, "params :" + JSON.stringify(ctx.params));
 
