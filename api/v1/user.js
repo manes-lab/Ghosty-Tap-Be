@@ -5,6 +5,9 @@ const crypto = require('crypto');
 const setting = require("./setting/setting.json");
 const setDegen = require("./setting/degen.json");
 const {getRandomInt, generateCaptcha} = require("../../utils/utils")
+import { verifyPersonalMessageSignature} from '@mysten/sui/verify';
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = 'your-secret-key'; // In production, use environment variable
 module.exports = function (app) {
 
 
@@ -760,6 +763,66 @@ module.exports = function (app) {
     }
     ctx.body = {
       code: '200', success: true, msg: 'ok', data: {}
+    }
+  })
+
+  app.post('/api/v1/user/registerOrLogin', async (ctx, next) => {
+    let params = ctx.params
+    let userId = params.user_id
+    let message = params.message
+    let signature = params.signature
+    let address = params.address
+    let User = ctx.model("user")
+    let u = await User.getRow({user_id: userId})
+    let is_follow =false //await checkMember(config.get('telegram').CHANNEL_ID, userId, 'follow')
+    let is_join = false //await checkMember(config.get('telegram').community, userId, 'community')
+    if (!u ) {
+      console.log(message);
+      /*const signedResult = await signPersonalMessage.mutateAsync({
+        message: new TextEncoder().encode(message),
+      });*/
+      console.log('Signature from wallet:', signature);
+      try {
+        // Revert to using verifyPersonalMessageSignature with the original message bytes
+        const isValid = await verifyPersonalMessageSignature(new TextEncoder().encode(message), signature, {
+          address: address
+        });
+        if (!isValid) {
+          return  ctx.body = {
+            code: '200', success: false, msg: 'signature verify fail ', data: {}
+          }
+        }
+        console.log(isValid ? 'Signature verification (using verifyPersonalMessageSignature): 签名有效！' : 'Signature verification (using verifyPersonalMessageSignature): 签名无效！');
+      }catch (e) {
+        console.error('Error during verifyPersonalMessageSignature:', e);
+        return  ctx.body = {
+          code: '200', success: false, msg: 'signature verify fail ', data: {}
+        }
+      }
+      await User.updateOrInsertRow({user_id: userId}, {
+        first_name: params.first_name,
+        last_name: params.last_name,
+        username: params.username,
+        is_follow: is_follow,
+        is_join: is_join,
+        avatar: getRandomInt(1, 5) + "",
+        channel_id: config.get('telegram').CHANNEL_ID,
+        photo_url: params.photo_url,
+      })
+    }
+
+    const token = jwt.sign(
+        {
+          address,
+          timestamp: Date.now()
+        },
+        JWT_SECRET,
+        { expiresIn: '365d' }
+    );
+
+
+    return  ctx.body = {
+      code: '200', success: true, msg: 'ok', data: {token:token}
     }
   })
 
