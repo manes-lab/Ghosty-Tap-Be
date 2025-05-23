@@ -98,9 +98,10 @@ const verify = async (ctx, next) => {
       //let token = config.telegram.OTHER_TOKEN[appId]
       const user_id = ctx.req.headers.user_id
       const token = ctx.req.headers.token
-  /*    if (!token) {
-        token = config.telegram.TOKEN
-      }*/
+      console.log("\x1b[33m%s\x1b[0m",ctx.req.headers);
+      /*    if (!token) {
+            token = config.telegram.TOKEN
+          }*/
 
       // const initData = new URLSearchParams( dataCheckString );
       // let user = initData.get( "user" )
