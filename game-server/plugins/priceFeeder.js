@@ -67,7 +67,7 @@ PriceService.prototype.start = function(cb) {
     //   this.bars[instId].push(bar.slice(0, 5))
     // }
     newWebSocket(instId + "-SWAP", (data) => {
-      console.log(data)
+    //  console.log(data)
       if (data.event) {
         return
       }
@@ -76,7 +76,7 @@ PriceService.prototype.start = function(cb) {
       if (this.bars[key].length > 500) {
         this.bars[key].shift()
       } else {
-        console.log(key, "bars length: ", this.bars[key].length)
+      //  console.log(key, "bars length: ", this.bars[key].length)
       }
       
     })
