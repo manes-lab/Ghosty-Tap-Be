@@ -3,6 +3,7 @@ const app = new Koa();
 const config = require('config');
 const { initServer, initClient } = require('./plugins/websocket');
 const verify = require('./plugins/verify.js')
+const response = require('./plugins/response.js')
 const timer =require('./libraries/schedule/timer')
 global.config = config;
 const Router = require('koa-router');
@@ -24,6 +25,7 @@ let mongodb_conf = config.get('mongodb');
 mongodb_conf['schemas'] = __dirname + '/models';
 app.use(require('./plugins/mongoose')(mongodb_conf));
 app.use(verify)
+app.use(response);
 if (process.env.NODE_ENV == 'timer'||process.env.NODE_ENV == 'dev') {
   timer.start(require('./plugins/mongoose').models)
 }

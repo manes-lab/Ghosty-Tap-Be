@@ -112,9 +112,15 @@ const verify = async (ctx, next) => {
            }
          }*/
 
+
+
       // const timestamp = initData.get('auth_date')
       // user=JSON.parse(user)
       // console.log(user);
+    /*  {
+        code: '2001', success: false, msg: 'token error', data: {}
+      }*/
+
       ctx.params = {
 
         ...params,
