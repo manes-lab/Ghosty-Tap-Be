@@ -51,7 +51,8 @@ const verify = async (ctx, next) => {
     '/api/v1/setting/setNotice',
     '/api/v1/squares/setBlock',
     '/api/v1/user/register',
-    '/api/v1/squares/urlInvitationForBattle'
+    '/api/v1/squares/urlInvitationForBattle',
+      '/api/v1/user/registerOrLogin'
 
   ]
   let manager =[
