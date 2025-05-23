@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const setting = require("./setting/setting.json");
 const setDegen = require("./setting/degen.json");
 const {getRandomInt, generateCaptcha} = require("../../utils/utils")
-import { verifyPersonalMessageSignature} from '@mysten/sui/verify';
+const { verifyPersonalMessageSignature} =require( '@mysten/sui/verify');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'your-secret-key'; // In production, use environment variable
 module.exports = function (app) {
