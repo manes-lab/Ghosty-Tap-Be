@@ -17,7 +17,7 @@ handler.leaveSquare = async function (msg, session, next) {
 };
 
 handler.enterSquare = async function (msg, session, next) {
-  const {verify} = require('../../../util/verify');
+/*  const {verify} = require('../../../util/verify');
   let self = this;
   let dataCheckString = msg.dataCheckString
   if (!dataCheckString) {
@@ -33,10 +33,10 @@ handler.enterSquare = async function (msg, session, next) {
       code: 401, error: true
     });
     return;
-  }
+  }*/
 
-  let user = JSON.parse(initData.get("user"))
-  let userId = user.id
+ // let user = JSON.parse(initData.get("user"))
+  let userId =msg.user_id
   let sessionService = self.app.get('sessionService');
   
   let duplicatedSession = sessionService.getByUid(userId)
