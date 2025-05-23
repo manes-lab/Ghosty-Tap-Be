@@ -17,6 +17,7 @@ module.exports = function(app, opts) {
 DbService.prototype.start = function(cb) {
   let options = this.app.get('options').mongodb
   options['schemas'] = appRoot + '/../models';
+  console.log('mongoose :',options);
   mongoose.connect(options.host, function(err){
       if (err) throw err;
       console.log('# mongodb connected.');
