@@ -95,27 +95,28 @@ const verify = async (ctx, next) => {
 
    const dataCheckString = params.data_check_string
       const appId = params.app_id
-      let token = config.telegram.OTHER_TOKEN[appId]
+      //let token = config.telegram.OTHER_TOKEN[appId]
+      const user_id = ctx.req.headers.user_id
+      const token = ctx.req.headers.token
   /*    if (!token) {
         token = config.telegram.TOKEN
       }*/
 
-      const initData = new URLSearchParams( dataCheckString );
-      let user = initData.get( "user" )
+      // const initData = new URLSearchParams( dataCheckString );
+      // let user = initData.get( "user" )
       /*      if (!auth(token, new URLSearchParams( dataCheckString ))) {
            if (!auth(config.telegram.TOKEN, new URLSearchParams( dataCheckString ))) {
              ctx.throw(401, 'now allowed');
            }
          }*/
 
-         const timestamp = initData.get('auth_date')
-      user=JSON.parse(user)
-      console.log(user);
+      // const timestamp = initData.get('auth_date')
+      // user=JSON.parse(user)
+      // console.log(user);
       ctx.params = {
          appId: params.app_id,
         ...params.args,
-        ...user,
-        user_id:(user.id).toString()
+        user_id:user_id
       }
       console.log(fgGreen, "params :" + JSON.stringify(ctx.params));
 
