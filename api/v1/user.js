@@ -5,7 +5,6 @@ const crypto = require('crypto');
 const setting = require("./setting/setting.json");
 const setDegen = require("./setting/degen.json");
 const {getRandomInt, generateCaptcha} = require("../../utils/utils")
-const { verifyPersonalMessageSignature} =require( '@mysten/sui/verify');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'your-secret-key'; // In production, use environment variable
 module.exports = function (app) {
@@ -745,7 +744,7 @@ module.exports = function (app) {
     let u = await User.getRow({user_id: userId})
     let is_follow = await checkMember(config.get('telegram').CHANNEL_ID, userId, 'follow')
     let is_join = await checkMember(config.get('telegram').community, userId, 'community')
-    if (!u || !u.first_name) {
+    if (!u ) {
       await User.updateOrInsertRow({user_id: userId}, {
         first_name: params.first_name,
         last_name: params.last_name,
