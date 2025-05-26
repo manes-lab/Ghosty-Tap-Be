@@ -772,6 +772,11 @@ module.exports = function (app) {
     let signature = params.signature
     let address = params.address
     let User = ctx.model("user")
+    if (!userId) {
+      return  ctx.body = {
+        code: '200', success: false, msg: ' user_id empty', data: null
+      }
+    }
     let u = await User.getRow({user_id: userId})
     let is_follow =false //await checkMember(config.get('telegram').CHANNEL_ID, userId, 'follow')
     let is_join = false //await checkMember(config.get('telegram').community, userId, 'community')
