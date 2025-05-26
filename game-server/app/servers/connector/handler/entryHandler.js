@@ -17,8 +17,9 @@ handler.leaveSquare = async function (msg, session, next) {
 };
 
 handler.enterSquare = async function (msg, session, next) {
-/*  const {verify} = require('../../../util/verify');
-  let self = this;
+  let self = this
+  /*  const {verify} = require('../../../util/verify');
+  ;
   let dataCheckString = msg.dataCheckString
   if (!dataCheckString) {
     next(null, {
