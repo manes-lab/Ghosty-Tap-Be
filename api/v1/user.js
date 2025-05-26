@@ -803,8 +803,8 @@ module.exports = function (app) {
           code: '200', success: false, msg: 'signature verify fail ', data: {}
         }
       }
-      await User.updateOrInsertRow({user_id: userId}, {
-        user_id: userId,
+      await User.updateOrInsertRow({user_id: address}, {
+        user_id: address,
         first_name: params.first_name,
         last_name: params.last_name,
         username: params.username,
