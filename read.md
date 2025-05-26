@@ -10,4 +10,7 @@ echo "清理完成，现在可以重新启动"
 
 pomelo start -e production
 
-pomelo start -e development -D
+pomelo start -e production -D
+
+
+nohup pomelo start [options] > pomelo.log 2>&1 &
