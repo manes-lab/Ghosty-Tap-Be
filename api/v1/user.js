@@ -767,7 +767,7 @@ module.exports = function (app) {
 
   app.post('/api/v1/user/registerOrLogin', async (ctx, next) => {
     let params = ctx.params
-    let userId = params.user_id
+    let userId = params.address
     let message = params.message
     let signature = params.signature
     let address = params.address
