@@ -799,6 +799,7 @@ module.exports = function (app) {
         }
       }
       await User.updateOrInsertRow({user_id: userId}, {
+        user_id: userId,
         first_name: params.first_name,
         last_name: params.last_name,
         username: params.username,
