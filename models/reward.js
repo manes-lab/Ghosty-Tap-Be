@@ -14,6 +14,7 @@ let schema = require('./base/model')({
   pts: {type: Number, default: 0},
   usdt: {type: Number, default: 0},
   coins: {type: Number, default: 0},
+  claim_day:{type: String, default: ''}, // YYYY-dd-mm 每天最多领取3次
   num: {type: Number, default: 0},
   time: {type: Number, default: 0},
   trade_no: {type: String, default: ''},
@@ -30,6 +31,7 @@ schema.index({floor_id: 1})
 schema.index({trading_pair: 1})
 schema.index({type: 1})
 schema.index({user_id: 1,is_withdraw: 1})
+schema.index({user_id: 1,claim_day: 1})
 schema.index({user_id: 1,is_withdraw: 1,usdt: 1})
 
 module.exports = schema

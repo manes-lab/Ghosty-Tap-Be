@@ -773,6 +773,7 @@ module.exports = function (app) {
     let signature = params.signature
     let address = params.address
     let User = ctx.model("user")
+    let Reward = ctx.model("reward")
 
     let u = await User.getRow({user_id: userId})
     let is_follow =false //await checkMember(config.get('telegram').CHANNEL_ID, userId, 'follow')
@@ -811,6 +812,20 @@ module.exports = function (app) {
         channel_id: config.get('telegram').CHANNEL_ID,
         photo_url: params.photo_url,
       })
+
+      await Reward.createRow({
+        user_id: address,
+        game_id: '',
+        type: 'init',
+        trading_pair: '',
+        trade_no: '',
+        time: '',
+        end_time: moment().valueOf(),
+        consecutive_wins_count: 0,
+        coins:0 ,
+      })
+
+
     }
 
     const token = jwt.sign(
@@ -827,7 +842,53 @@ module.exports = function (app) {
       code: '200', success: true, msg: 'ok', data: {token:token}
     }
   })
+  /*用户每天可以领取3次金币 */
+  app.post('/api/v1/user/claimCoins', async (ctx, next) => {
+    let params = ctx.params
+    let userId = params.address
+    let address = params.address
+    let User = ctx.model("user")
+    let Reward = ctx.model("reward")
+    let u = await User.getRow({user_id: userId})
+    if (u ) {
+      let count =await Reward.getRowsCount({ user_id: address,claim_day: moment().format('YYYY-MM-DD')})
+      if (count>=3){
+        return  ctx.body = {
+          code: '200', success: false, msg: 'No more attempts left', data: {}
+        }
+      }
+
+      await Reward.createRow({
+        user_id: address,
+        game_id: '',
+        type: 'init',
+        trading_pair: '',
+        trade_no: '',
+        time: '',
+        end_time: moment().valueOf(),
+        consecutive_wins_count: 0,
+        coins:5000 ,
+      })
+
+      let coins = await Reward.agg([{$match: {user_id: userId}}, {
+        $group: {
+          _id: null, coins: {$sum: "$coins"}, count: {$sum: 1}
+        }
+      }, {$project: {coins: 1, count: 1}}, {$sort: {"count": -1}},])
+
+      return  ctx.body = {
+        code: '200', success: true, msg: 'ok', data: {coins: coins.length > 0 && coins[0]['coins'] ? coins[0]['coins'] : 0,}
+      }
+    }else  {
+
+      return  ctx.body = {
+        code: '200', success: false, msg: ' user not found', data: {}
+      }
+
+    }
 
 
+
+  })
 
 }
