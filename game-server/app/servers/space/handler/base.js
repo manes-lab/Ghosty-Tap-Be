@@ -14,7 +14,11 @@ var Handler = function (app) {
 };
 
 var handler = Handler.prototype;
-
+// 定义 ping 接口
+handler.ping = function (msg, session, next) {
+  // 直接返回客户端发送的时间戳
+  next(null, { serverTime: Date.now(), clientTime: msg.clientTime });
+};
 
 handler.enterSpace = async function (msg, session, next) {
   let self = this;
