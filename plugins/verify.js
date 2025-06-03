@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
 // JWT Secret - 在生产环境中应该使用环境变量
-const JWT_SECRET = 'your-secret-key';
+const JWT_SECRET = 'yydd-ccbbet-det';
 
 function auth(apiToken, initData) {
     const data = initData
