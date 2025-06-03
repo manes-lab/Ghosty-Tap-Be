@@ -27,9 +27,8 @@ handler.enterSquare = async function (msg, session, next) {
     });
     return;
   }
-  const initData = new URLSearchParams(dataCheckString);
-  console.log(' initData: ', initData);
-  if (!verify(self.app.get("options").telegram.TOKEN, initData)) {
+
+  if (!verify(token)) {
     next(null, {
       code: 401, error: true
     });
