@@ -21,7 +21,7 @@ handler.enterSquare = async function (msg, session, next) {
    const {verify} = require('../../../util/verify');
 
   let token = msg.token
-  if (!token) {
+/*  if (!token) {
     next(null, {
       code: 500, error: true
     });
@@ -33,7 +33,7 @@ handler.enterSquare = async function (msg, session, next) {
       code: 401, error: true
     });
     return;
-  }
+  }*/
 
  // let user = JSON.parse(initData.get("user"))
   let userId =msg.user_id
