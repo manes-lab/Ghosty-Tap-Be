@@ -268,6 +268,8 @@ const verify = async (ctx, next) => {
 
         } else if (whiteList.indexOf(url) != -1) {
             // 白名单接口处理逻辑
+            const user_id = ctx.req.headers['user-id'] ? ctx.req.headers['user-id'] : ctx.req.headers.user_id
+            const token = ctx.req.headers.token
             ctx.params = {
                 ...params,
                 user_id: user_id,
