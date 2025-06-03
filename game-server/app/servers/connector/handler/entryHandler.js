@@ -30,15 +30,15 @@ handler.enterSquare = async function (msg, session, next) {
     return;
   }
 
-  if (!verify(token)) {
+  let address = verify(token);
+  if (!address) {
     next(null, {
       code: 401, error: true
     });
     return;
   }
-
  // let user = JSON.parse(initData.get("user"))
-  let userId =msg.user_id
+  let userId =address
   let sessionService = self.app.get('sessionService');
   
   let duplicatedSession = sessionService.getByUid(userId)

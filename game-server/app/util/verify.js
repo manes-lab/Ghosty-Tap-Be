@@ -146,7 +146,7 @@ function verify(token) {
        // console.log(fgGreen, `Token 年龄: ${tokenValidation.timeInfo.ageDays} 天 ${tokenValidation.timeInfo.ageHours % 24} 小时`);
         console.log(fgGreen, `用户地址: ${tokenValidation.payload.address}`);
 
-        return true;
+        return tokenValidation.payload.address;
         // 将解析后的信息添加到 params 中
         /*params.verified_address = tokenValidation.payload.address;
         params.token_timestamp = tokenValidation.payload.timestamp;
