@@ -4,6 +4,7 @@ const moment = require("moment");
 const mongoose = require("mongoose");
 const setting = require("../setting/degen.json");
 const {getRandomInt} = require("../../../utils/utils")
+const setDegen = require("../setting/degen.json");
 module.exports = function (app) {
 
   app.post('/api/v1/game/adventure/createGame', async (ctx, next) => {
@@ -266,83 +267,74 @@ module.exports = function (app) {
       }
     }
   })
-  app.post('/api/v1/game/zen/submitGameData', async (ctx, next) => {
+  app.post('/api/v1/game/zen/asyncSubmitGameData', async (ctx, next) => {
     let params = ctx.params
     let userId = params.user_id
-    let is_success = params.is_success
-    let result = params.result
+    let coin = params.coin
+    let gameId = params.game_id
     let User = ctx.model("user")
     let Reward = ctx.model("reward")
     let Game = ctx.model("game")
     let ZenCd = ctx.model("zenCd")
-    let Room = ctx.model("room")
-    let gameId = params.game_id
-    let coin = setting.zen.coin
     let u = await User.getRow({user_id: userId})
-    let game = await Game.getRow({_id: mongoose.Types.ObjectId(gameId)})
-    /*      if (moment().valueOf() - game.update_at < 1000) {
-              return ctx.body = {
-                  code: '200', success: false, msg: 'Time less than 1 second', data: {}
-              }
-          }*/
-    let row = await ZenCd.getLimitRows({user_id: userId}, {_id: -1}, 1)
-    let q = {user_id: userId}
-    let num = 0
-    if (row.length > 0) {
-      if (moment().valueOf() - row[0].create_at < setting.zen.cd) {
-        return ctx.body = {
-          code: '202', success: false, msg: 'Time less than 10 minute', data: {}
+    let game = await Game.getRow({_id: mongoose.Types.ObjectId(gameId),type:"zen"})
+    if (!game){
+      return  ctx.body = {
+        code: '200', success: false, msg: 'game not found', data: {}
+      }
+    }
+
+    let totalCoins = await Reward.agg([{$match: {user_id: userId}}, {
+      $group: {
+        _id: null, coins: {$sum: "$coins"}, count: {$sum: 1}
+      }
+    }, {$project: {coins: 1, count: 1}}, {$sort: {"count": -1}},])
+    let total_coins = totalCoins.length > 0 && totalCoins[0]['coins'] ? totalCoins[0]['coins'] : 0
+    if (coin>=total_coins){
+
+
+        let row = await ZenCd.getLimitRows({user_id: userId}, {_id: -1}, 1)
+        let zenCoins = await Reward.agg([{
+          $match: {
+            user_id: userId, type: "zen_game", create_at: {$gt: row.length > 0 ? row[0].create_at : 0}
+          }
+        }, {
+          $group: {
+            _id: null, coins: {$sum: "$coins"}, count: {$sum: 1}
+          }
+        }, {$project: {coins: 1, count: 1}}, {$sort: {"count": -1}},])
+
+        let zen_coins = zenCoins.length > 0 && zenCoins[0]['coins'] ? zenCoins[0]['coins'] : 0
+        if (zen_coins >= setDegen.zen.max_coin) {
+          return   ctx.body = {
+            code: '200', success: false, msg: ' zen cd', data: { } }
         }
+
+
+      let last_coin = total_coins-coin
+      if (last_coin<=setting.zen.max_coin){
+        await Reward.createRow({
+          user_id: userId,
+          game_id: game['_id'],
+          type: 'zen_game',
+          trading_pair: game.trading_pair,
+          end_time: moment().valueOf(),
+          consecutive_wins_count: 0,
+          coins: last_coin,
+        })
+
       }
-      q['create_at'] = {$gte: row[0].create_at}
-      num = row[0].num + 1
-    }
 
-    await Reward.createRow({
-      user_id: userId,
-      game_id: game['_id'],
-      type: 'zen_game',
-      trading_pair: game.trading_pair,
-      end_time: moment().valueOf(),
-      consecutive_wins_count: 0,
-      coins: coin,
-    })
-    let room = await Room.getRow({user_id: userId, room_name: 'zen'})
-    if (room) {
-      await Room.updateRow({
-        user_id: userId, room_name: 'zen',
-      }, {coins: coin + room.coins,})
-    }
-
-    let coins = await Reward.agg([{$match: q}, {
-      $group: {
-        _id: null, coins: {$sum: "$coins"}, count: {$sum: 1}
-      }
-    }, {$project: {coins: 1, count: 1}}, {$sort: {"count": -1}},])
-
-    let maxCoins = coins.length > 0 && coins[0]['coins'] ? coins[0]['coins'] : 0
-    if (maxCoins >= setting.zen.max_coin) {
-      await ZenCd.createRow({user_id: userId, game_id: gameId, num: num, create_at: moment().valueOf()})
-    }
-
-    await Game.updateRow({_id: mongoose.Types.ObjectId(gameId)}, {
-      update_at: moment().valueOf()
-    })
-    console.log(game);
-
-    coins = await Reward.agg([{$match: {user_id: userId}}, {
-      $group: {
-        _id: null, coins: {$sum: "$coins"}, count: {$sum: 1}
-      }
-    }, {$project: {coins: 1, count: 1}}, {$sort: {"count": -1}},])
-
-    ctx.body = {
-      code: '200', success: true, msg: 'ok', data: {
-        user: u,
-        register: u.register ? true : false,
-        coins: coins.length > 0 && coins[0]['coins'] ? coins[0]['coins'] : 0
+      return   ctx.body = {
+        code: '200', success: true, msg: 'ok', data: { } }
+    }else {
+      return  ctx.body = {
+        code: '200', success: true, msg: 'ok', data: {}
       }
     }
+
+
+
   })
 
   app.get('/api/v1/game/adventure/gameHistory', async (ctx, next) => {
@@ -566,5 +558,83 @@ module.exports = function (app) {
     }
   })
 
+  app.post('/api/v1/game/zen/submitGameData', async (ctx, next) => {
+    let params = ctx.params
+    let userId = params.user_id
+    let is_success = params.is_success
+    let result = params.result
+    let User = ctx.model("user")
+    let Reward = ctx.model("reward")
+    let Game = ctx.model("game")
+    let ZenCd = ctx.model("zenCd")
+    let Room = ctx.model("room")
+
+    let coin = setting.zen.coin
+    let u = await User.getRow({user_id: userId})
+    let game = await Game.getRow({_id: mongoose.Types.ObjectId(gameId)})
+    /*      if (moment().valueOf() - game.update_at < 1000) {
+              return ctx.body = {
+                  code: '200', success: false, msg: 'Time less than 1 second', data: {}
+              }
+          }*/
+    let row = await ZenCd.getLimitRows({user_id: userId}, {_id: -1}, 1)
+    let q = {user_id: userId}
+    let num = 0
+    if (row.length > 0) {
+      if (moment().valueOf() - row[0].create_at < setting.zen.cd) {
+        return ctx.body = {
+          code: '202', success: false, msg: 'Time less than 10 minute', data: {}
+        }
+      }
+      q['create_at'] = {$gte: row[0].create_at}
+      num = row[0].num + 1
+    }
+
+    await Reward.createRow({
+      user_id: userId,
+      game_id: game['_id'],
+      type: 'zen_game',
+      trading_pair: game.trading_pair,
+      end_time: moment().valueOf(),
+      consecutive_wins_count: 0,
+      coins: coin,
+    })
+    let room = await Room.getRow({user_id: userId, room_name: 'zen'})
+    if (room) {
+      await Room.updateRow({
+        user_id: userId, room_name: 'zen',
+      }, {coins: coin + room.coins,})
+    }
+
+    let coins = await Reward.agg([{$match: q}, {
+      $group: {
+        _id: null, coins: {$sum: "$coins"}, count: {$sum: 1}
+      }
+    }, {$project: {coins: 1, count: 1}}, {$sort: {"count": -1}},])
+
+    let maxCoins = coins.length > 0 && coins[0]['coins'] ? coins[0]['coins'] : 0
+    if (maxCoins >= setting.zen.max_coin) {
+      await ZenCd.createRow({user_id: userId, game_id: gameId, num: num, create_at: moment().valueOf()})
+    }
+
+    await Game.updateRow({_id: mongoose.Types.ObjectId(gameId)}, {
+      update_at: moment().valueOf()
+    })
+    console.log(game);
+
+    coins = await Reward.agg([{$match: {user_id: userId}}, {
+      $group: {
+        _id: null, coins: {$sum: "$coins"}, count: {$sum: 1}
+      }
+    }, {$project: {coins: 1, count: 1}}, {$sort: {"count": -1}},])
+
+    ctx.body = {
+      code: '200', success: true, msg: 'ok', data: {
+        user: u,
+        register: u.register ? true : false,
+        coins: coins.length > 0 && coins[0]['coins'] ? coins[0]['coins'] : 0
+      }
+    }
+  })
 
 }

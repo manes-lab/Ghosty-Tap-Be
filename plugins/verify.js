@@ -52,7 +52,8 @@ const verify = async (ctx, next) => {
         '/api/v1/user/register',
         '/api/v1/squares/urlInvitationForBattle',
         '/api/v1/user/registerOrLogin',
-        '/api/v1/user/claimCoins'
+        '/api/v1/user/claimCoins',
+        '/api/v1/game/zen/asyncSubmitGameData'
 
     ]
     let manager = [
