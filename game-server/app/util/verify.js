@@ -114,6 +114,7 @@ function verifyTokenComplete(token, maxAgeInHours = 365 * 24) { // 365天 = 365 
         };
     }
 
+/*
     // 2. 校验时间
     const timeValidation = validateTokenTime(payload, maxAgeInHours);
     if (!timeValidation.valid) {
@@ -123,11 +124,12 @@ function verifyTokenComplete(token, maxAgeInHours = 365 * 24) { // 365天 = 365 
             payload: payload
         };
     }
+*/
 
     return {
         valid: true,
         payload: payload,
-        timeInfo: timeValidation
+       // timeInfo: timeValidation
     };
 }
 
@@ -141,7 +143,7 @@ function verify(token) {
 
     } else {
         console.log(fgGreen, "Token 验证成功!");
-        console.log(fgGreen, `Token 年龄: ${tokenValidation.timeInfo.ageDays} 天 ${tokenValidation.timeInfo.ageHours % 24} 小时`);
+       // console.log(fgGreen, `Token 年龄: ${tokenValidation.timeInfo.ageDays} 天 ${tokenValidation.timeInfo.ageHours % 24} 小时`);
         console.log(fgGreen, `用户地址: ${tokenValidation.payload.address}`);
 
         return true;
@@ -152,7 +154,7 @@ function verify(token) {
         params.token_age_days = tokenValidation.timeInfo.ageDays;
         params.user_id = tokenValidation.payload.address;*/
     }
-  return true
+
 }
 
 module.exports = {
