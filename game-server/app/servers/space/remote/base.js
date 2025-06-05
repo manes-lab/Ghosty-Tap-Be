@@ -125,7 +125,6 @@ Space.prototype.pushMessage = async function (serverId,userId, route, param, cb)
     
     let uids = channel.getMembers();
     console.log('Channel members:', uids);
-    console.log('Target serverId:', serverId);
     console.log('Target userId:', userId);
     
     // 检查目标用户是否在频道中
@@ -134,15 +133,12 @@ Space.prototype.pushMessage = async function (serverId,userId, route, param, cb)
       // 如果用户不在频道中，可以选择添加用户到频道
       // channel.add(userId, serverId);
     }
-    
-    // Pomelo框架中的正确推送方式
-    let targets = [{
-      uid: userId,
-      sid: serverId
-    }];
-    
+
     // 使用pushMessageByUids推送给特定用户
-    channel.pushMessageByUids(route, param, [userId], (err) => {
+    this.channelService.pushMessageByUids(route, param, [{
+      uid: userId,
+      sids:serverId
+    }], {},(err) => {
       if (err) {
         console.log('Push message error:', err);
         cb(null, { code: 500, msg: 'Push message failed', error: err.toString() });
