@@ -112,7 +112,7 @@ Space.prototype.kick = async function (userId, serverId,name,session_id,cb) {
 };
 
 
-Space.prototype.pushMessage = async function (serverId,userId, route, param, cb) {
+Space.prototype.pushMessage = async function (userId, route, param, cb) {
   try {
     // 获取频道，如果不存在则创建
     let channel = this.channelService.getChannel("square", true);
@@ -137,7 +137,7 @@ Space.prototype.pushMessage = async function (serverId,userId, route, param, cb)
     // 使用pushMessageByUids推送给特定用户
     this.channelService.pushMessageByUids(route, param, [{
       uid: userId,
-      sid:serverId
+      sid:'connector-server-1'
     }], {},(err) => {
       if (err) {
         console.log('Push message error:', err);

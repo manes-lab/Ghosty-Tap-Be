@@ -329,7 +329,9 @@ handler.sendInvitation = async function (params, session, next) {
       invite_id: invitation._id,
       invite_user_id: userId
     }
-    self.app.rpc.space.base.pushMessage(null, self.app.get('serverId'),beInvitedUserId, 'inviteBattle', param, () => {
+  let sid =  self.app.get('serverId')
+    console.log('sid :' ,sid);
+    self.app.rpc.space.base.pushMessage(null, beInvitedUserId, 'inviteBattle', param, () => {
       console.log("push", beInvitedUserId, 'inviteBattle', param)
     })
   }
