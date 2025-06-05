@@ -125,7 +125,7 @@ Space.prototype.pushMessage = async function (userId, route, param, cb) {
       sid: serverId
     }]);
 
-   // cb(true)
+    cb(true)
   } catch (e) {
     console.log('Error: ',e)
   //  cb(false)
