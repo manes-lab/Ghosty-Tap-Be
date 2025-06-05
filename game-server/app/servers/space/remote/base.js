@@ -137,7 +137,7 @@ Space.prototype.pushMessage = async function (serverId,userId, route, param, cb)
     // 使用pushMessageByUids推送给特定用户
     this.channelService.pushMessageByUids(route, param, [{
       uid: userId,
-      sids:serverId
+      sid:serverId
     }], {},(err) => {
       if (err) {
         console.log('Push message error:', err);
