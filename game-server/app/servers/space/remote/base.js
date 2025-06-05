@@ -114,21 +114,48 @@ Space.prototype.kick = async function (userId, serverId,name,session_id,cb) {
 
 Space.prototype.pushMessage = async function (serverId,userId, route, param, cb) {
   try {
-    let channel = this.channelService.getChannel("square", false);
+    // 获取频道，如果不存在则创建
+    let channel = this.channelService.getChannel("square", true);
+    
+    if (!channel) {
+      console.log('Failed to get or create channel: square');
+      cb(null, { code: 500, msg: 'Channel error' });
+      return;
+    }
+    
     let uids = channel.getMembers();
-    console.log('uids :',uids);
-    console.log('serverId :',serverId);
-    channel.pushMessage(route, param, [{
+    console.log('Channel members:', uids);
+    console.log('Target serverId:', serverId);
+    console.log('Target userId:', userId);
+    
+    // 检查目标用户是否在频道中
+    if (!uids || uids.indexOf(userId) === -1) {
+      console.log('User not in channel, adding user to channel');
+      // 如果用户不在频道中，可以选择添加用户到频道
+      // channel.add(userId, serverId);
+    }
+    
+    // Pomelo框架中的正确推送方式
+    let targets = [{
       uid: userId,
       sid: serverId
-    }]);
-
-    cb(true)
+    }];
+    
+    // 使用pushMessageByUids推送给特定用户
+    channel.pushMessageByUids(route, param, [userId], (err) => {
+      if (err) {
+        console.log('Push message error:', err);
+        cb(null, { code: 500, msg: 'Push message failed', error: err.toString() });
+      } else {
+        console.log('Message sent successfully to user:', userId);
+        cb(null, { code: 200, msg: 'Message sent successfully' });
+      }
+    });
+    
   } catch (e) {
-    console.log('Error: ',e)
-    console.log(e)
-    console.log(e.toString())
-  //  cb(false)
+    console.log('Exception in push message:', e);
+    console.log('Stack trace:', e.stack);
+    cb(null, { code: 500, msg: 'Server error', error: e.toString() });
   }
   
 }
