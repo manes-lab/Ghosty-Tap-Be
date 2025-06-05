@@ -115,8 +115,8 @@ Space.prototype.kick = async function (userId, serverId,name,session_id,cb) {
 Space.prototype.pushMessage = async function (userId, route, param, cb) {
   try {
     let channel = this.channelService.getChannel("square", false);
-    console.log('channel :',channel);
-    let serverId = channel.getMember(userId)['sid'];
+
+    let serverId = channel.getMember(userId);
     console.log('serverId :',serverId);
     let uids = channel.getMembers();
     console.log('uids :',uids);
