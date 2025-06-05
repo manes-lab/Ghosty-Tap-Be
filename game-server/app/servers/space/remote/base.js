@@ -118,7 +118,7 @@ Space.prototype.pushMessage = async function (serverId,userId, route, param, cb)
     let uids = channel.getMembers();
     console.log('uids :',uids);
     console.log('serverId :',serverId);
-    this.channelService.pushMessageByUids(route, param, [{
+    channel.pushMessageByUids(route, param, [{
       uid: userId,
       sid: serverId
     }]);
@@ -126,6 +126,8 @@ Space.prototype.pushMessage = async function (serverId,userId, route, param, cb)
     cb(true)
   } catch (e) {
     console.log('Error: ',e)
+    console.log(e)
+    console.log(e.toString())
   //  cb(false)
   }
   
