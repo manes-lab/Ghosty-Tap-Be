@@ -119,7 +119,8 @@ Space.prototype.pushMessage = async function (userId, route, param, cb) {
     this.channelService.pushMessageByUids(route, param, [{
       uid: userId,
       sid: serverId
-    }]);
+    }],{}, cb(true));
+
     cb(true)
   } catch (e) {
     console.log(e)
