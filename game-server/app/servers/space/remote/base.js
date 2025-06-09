@@ -141,17 +141,17 @@ Space.prototype.pushMessage = async function (userId, route, param, cb) {
     }], {},(err) => {
       if (err) {
         console.log('Push message error:', err);
-        cb(null, { code: 500, msg: 'Push message failed', error: err.toString() });
+        cb( { code: 500, msg: 'Push message failed', error: err.toString() });
       } else {
         console.log('Message sent successfully to user:', userId);
-        cb(null, { code: 200, msg: 'Message sent successfully' });
+        cb({ code: 200, msg: 'Message sent successfully' });
       }
     });
     
   } catch (e) {
     console.log('Exception in push message:', e);
     console.log('Stack trace:', e.stack);
-    cb(null, { code: 500, msg: 'Server error', error: e.toString() });
+    cb( { code: 500, msg: 'Server error', error: e.toString() });
   }
   
 }
