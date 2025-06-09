@@ -264,12 +264,14 @@ handler.submitBattleAdventureGameData = async function (params, session, next) {
     })
   }else {
     self.app.rpc.space.base.pushMessage(null, pushUserId, 'battleStep', param, (success) => {
-      if (!success) {
-        self.app.rpc.battle.base.leave(null, pushUserId, battle['_id'], () => {
-          console.log("push", userId, 'battleOver', {battle_id: battle['_id'], reason: "leave"})
-        })
-        return
-      }
+      console.log("send message connect fail ",success);
+
+      /*    if (!success) {
+            self.app.rpc.battle.base.leave(null, pushUserId, battle['_id'], () => {
+              console.log("push", userId, 'battleOver', {battle_id: battle['_id'], reason: "leave"})
+            })
+          //  return
+          }*/
       console.log("push", pushUserId, 'battleStep', param)
     })
   }
