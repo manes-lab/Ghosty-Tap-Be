@@ -163,15 +163,7 @@ handler.submitBattleAdventureGameData = async function (params, session, next) {
     is_success,
     result: result
   }
-  self.app.rpc.space.base.pushMessage(null, pushUserId, 'battleStep', param, (success) => {
-    if (!success) {
-      self.app.rpc.battle.base.leave(null, pushUserId, battle['_id'], () => {
-        console.log("push", userId, 'battleOver', {battle_id: battle['_id'], reason: "leave"})
-      })
-      return
-    }
-    console.log("push", pushUserId, 'battleStep', param)
-  })
+
 
 //mark
 
@@ -259,13 +251,31 @@ handler.submitBattleAdventureGameData = async function (params, session, next) {
       await Battle.updateRow({_id: battle['_id']}, {status: 'draw'})
     }
 
+
+
+  }
+
+  if (count >= 10) {
     self.app.rpc.space.base.pushMessage(null, battle.invite_user_id, 'battleOver', {battle_id: battle['_id'], reason: "finish"}, () => {
       console.log("push", battle.invite_user_id, 'battleOver', {battle_id: battle['_id']})
     })
     self.app.rpc.space.base.pushMessage(null, battle.be_invite_user_id, 'battleOver', {battle_id: battle['_id'], reason: "finish"}, () => {
       console.log("push", battle.be_invite_user_id, 'battleOver', {battle_id: battle['_id']})
     })
+  }else {
+    self.app.rpc.space.base.pushMessage(null, pushUserId, 'battleStep', param, (success) => {
+      if (!success) {
+        self.app.rpc.battle.base.leave(null, pushUserId, battle['_id'], () => {
+          console.log("push", userId, 'battleOver', {battle_id: battle['_id'], reason: "leave"})
+        })
+        return
+      }
+      console.log("push", pushUserId, 'battleStep', param)
+    })
   }
+
+
+
   next(null, {
     code: '200', success: true, msg: 'ok', data: param
   });
