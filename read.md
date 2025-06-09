@@ -13,4 +13,4 @@ pomelo start -e production
 pomelo start -e production -D
 
 
-nohup pomelo start [options] > pomelo.log 2>&1 &
+nohup pomelo start [options] > pomelo.log 2>&1 & 

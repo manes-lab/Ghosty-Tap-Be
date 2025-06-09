@@ -5,7 +5,7 @@ let ws = {}
 function newWebSocket(instId, callback) {
     ws[instId]?.close()
 
-    let url = "wss://tegentap.com/ws/v5/business"
+    let url = "wss://ghostytap.com/ws/v5/business"
     
     ws = new WebSocket(url);
 
