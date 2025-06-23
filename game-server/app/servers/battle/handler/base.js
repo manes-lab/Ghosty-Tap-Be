@@ -214,7 +214,7 @@ handler.submitBattleAdventureGameData = async function (params, session, next) {
         trading_pair: battle.trading_pair,
         end_time: moment().valueOf(),
         from: "battle",
-        coins: battle.coins,
+        coins:( battle.coins*0.9).toFixed(0),
       })
       await Reward.createRow({
         user_id: battle.be_invite_user_id,
@@ -245,7 +245,7 @@ handler.submitBattleAdventureGameData = async function (params, session, next) {
         trading_pair: battle.trading_pair,
         end_time: moment().valueOf(),
         from: "battle",
-        coins: battle.coins,
+        coins:( battle.coins*0.9).toFixed(0),
       })
     } else {
       await Battle.updateRow({_id: battle['_id']}, {status: 'draw'})
