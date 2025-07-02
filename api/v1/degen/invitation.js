@@ -28,10 +28,10 @@ module.exports = function (app) {
     if (!invite) {
       return ctx.body = {code: '200', success: false, msg: 'code error', data: {}}
     }
-    let u = await User.getRow({user_id: userId})
+  /*  let u = await User.getRow({user_id: userId})
     if (u) {
       return ctx.body = {code: '200', success: false, msg: 'Already registered', data: {}}
-    }
+    }*/
     await User.updateOrInsertRow({user_id: userId}, {
       first_name: params.first_name,
       last_name: params.last_name,
